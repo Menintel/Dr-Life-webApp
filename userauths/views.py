@@ -48,7 +48,7 @@ def register_view(request):
 
 def login_view(request):
     if request.user.is_authenticated:
-        messages.success(request, "You're Logged in")
+        messages.success(request, "You're already logged in")
         return redirect("/")
     
     if request.method == "POST":
@@ -56,26 +56,25 @@ def login_view(request):
         if form.is_valid():
             email = form.cleaned_data.get("email")
             password = form.cleaned_data.get("password")
-
-            try:
-                user_instance = userauths_models.User.objects.get(email=email, is_active=True)
-                user_authenticate = authenticate(request, email=email, password=password)
-                
-                if user_instance is not None:
-                    login(request, user_authenticate)
-
-                    messages.success(request,  "Logged In Successfully")
-                    next_url = request.GET.get("next",'/') # if next exists, Else Got to home page
-                    return redirect(next_url) #redirect to home page
-                
-                else:
-                    messages.error(request, "Username or Password does not exist")
-            except:
-                messages.error(request, "User does not exist : Please create account!")
-
+            
+            # Single authentication step
+            user = authenticate(request, email=email, password=password)
+            
+            if user is not None:
+                login(request, user)
+                messages.success(request, "Logged In Successfully")
+                next_url = request.GET.get("next", '/')
+                return redirect(next_url)
+            else:
+                messages.error(request, "Invalid email or password")
     else:
         form = userauths_forms.LoginForm()
 
-    context = {"form":form}
-
+    context = {"form": form}
     return render(request, "userauths/sign-in.html", context)
+
+def logout_view(request):
+    logout(request)
+    messages.success(request,  "Logged Out Successfully")
+
+    return redirect("userauths:sign-in")

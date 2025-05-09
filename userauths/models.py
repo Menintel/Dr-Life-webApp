@@ -3,14 +3,14 @@ from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 USER_TYPE = (
+    ("Patient","Patient"),
     ("Doctor","Doctor"),
-    ("Patient","Patient")
 )
 
 class User(AbstractUser):
     email = models.EmailField(unique=True)
     username = models.CharField(null=True, blank=True)
-    user_type = models.CharField(max_length=50, choices=USER_TYPE, null=True, blank=True, default=None)
+    user_type = models.CharField(max_length=50, choices=USER_TYPE, default=None)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ['username']
