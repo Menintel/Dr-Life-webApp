@@ -15,6 +15,11 @@ import os
 
 from django.contrib.messages import constants as messages
 
+from environs import Env
+
+env = Env()
+env.read_env()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -144,6 +149,12 @@ MESSAGE_TAGS = { messages.ERROR: "danger"}
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+STRIPE_PUBLIC_KEY = env("STRIPE_PUBLIC_KEY")
+STRIPE_SECRET_KEY = env("STRIPE_SECRET_KEY")
+
+PAYPAL_CLIENT_ID = env("PAYPAL_CLIENT_ID")
+PAYPAY_SECRET_ID = env("PAYPAY_SECRET_ID")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

@@ -11,7 +11,7 @@ NOTIFICATION_TYPE = (
 # Create your models here.
 class Doctor(models.Model):
     user = models.OneToOneField(userauths_models.User, on_delete=models.CASCADE)
-    image = models.FileField(upload_to="images", null=True, blank=True)
+    image = models.ImageField(upload_to="images", null=True, blank=True)
     full_name = models.CharField(max_length=100, null=True, blank=True)
     country = models.CharField(max_length=100, null=True, blank=True)
     mobile = models.CharField(max_length=100, null=True, blank=True)

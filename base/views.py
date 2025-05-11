@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.conf import settings
 
 from base import models as base_models
 from doctor import models as doctor_models
 from patient import models as patient_models
 
-from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 def index(request):
@@ -65,6 +66,7 @@ def book_appointment(request, service_id, doctor_id):
         billing.tax = appointment.service.cost * 5 / 100
         billing.total = billing.sub_total + billing.tax
         billing.status = "Unpaid"
+        billing.save()
         
         return redirect("base:checkout", billing.billing_id)
 
@@ -75,3 +77,16 @@ def book_appointment(request, service_id, doctor_id):
     }
 
     return render(request, "base/book_appointment.html", context)
+
+def checkout(request, billing_id):
+    billing = base_models.Billing.objects.get(billing_id=billing_id)
+
+
+    context = {
+        "billing":billing,
+        "stripe_public_key": settings.STRIPE_PUBLIC_KEY,
+        
+        "paypal_client_id": settings.PAYPAL_CLIENT_ID,
+    }
+
+    return render(request, "base/checkout.html", context)

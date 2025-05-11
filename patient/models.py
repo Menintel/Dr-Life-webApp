@@ -8,19 +8,29 @@ NOTIFICATION_TYPE = (
     ("Appointment Cancelled","Appointment Cancelled"),
 )
 
+GENDER_CHOICES = (
+    ("Male", "Male"),
+    ("Female", "Female"),
+)
+
+
 # Create your models here.
 class Patient(models.Model):
     user = models.OneToOneField(userauths_models.User, on_delete=models.CASCADE)
-    image = models.FileField(upload_to="images", null=True, blank=True)
-    full_name = models.CharField(max_length=100, null=True, blank=True)
-    mobile = models.CharField(max_length=100, null=True, blank=True)
-    email = models.CharField(max_length=100, null=True, blank=True)
+    image = models.ImageField(upload_to="images", null=True, blank=True)
+    full_name = models.CharField(max_length=100)
+    mobile = models.CharField(max_length=15, null=True, blank=True,)
+    email = models.EmailField(max_length=100, null=True, blank=True)
     address = models.CharField(max_length=100, null=True, blank=True)
-    gender = models.CharField(max_length=10, null=True, blank=True)
+    gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
     dob = models.CharField(max_length=100, null=True, blank=True)
 
     def __str__(self):
         return f"{self.full_name}"
+    
+    def age(self):
+        today = timezone.now().date()
+        return today.year - self.dob.year - ((today.month, today.day) < (self.dob.month, self.dob.day))
 
 
 class Notification(models.Model):
