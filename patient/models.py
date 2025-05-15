@@ -20,7 +20,7 @@ class Patient(models.Model):
     image = models.ImageField(upload_to="images", null=True, blank=True)
     full_name = models.CharField(max_length=100)
     mobile = models.CharField(max_length=15, null=True, blank=True,)
-    email = models.EmailField(max_length=100, null=True, blank=True)
+    email = models.EmailField(max_length=100)
     address = models.CharField(max_length=100, null=True, blank=True)
     gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
     dob = models.CharField(max_length=100, null=True, blank=True)

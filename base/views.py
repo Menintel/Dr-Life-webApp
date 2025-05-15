@@ -5,6 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse
 from django.http import JsonResponse
 
+import requests
 import stripe
 
 from base import models as base_models
@@ -110,33 +111,120 @@ def stripe_payment(request, billing_id):
                     'currency':'USD',
                     'product_data':
                         { 'name':billing.patient.full_name },
-                    'unit_amount':int(billing.total) * 1000
+                    'unit_amount':int(billing.total) * 100
                 },
                 'quantity':1,
             }],
         mode='payment',
-        success_url=request.build_absolute_url(reverse("base.stripe_payment_verify", args=[billing.billing_id])) + "?session_id={CHECKOUT_SESSION_ID}",
-        cancel_url=request.build_absolute_url(reverse("base.stripe_payment_verify", args=[billing.billing_id])),
+        success_url=request.build_absolute_uri(reverse("base:stripe_payment_verify", args=[billing.billing_id])) + "?session_id={CHECKOUT_SESSION_ID}",
+        cancel_url=request.build_absolute_uri(reverse("base:stripe_payment_verify", args=[billing.billing_id])),
 
     )
-    return JsonResponse({"sessionId", checkout_session.id})
+    return JsonResponse({"sessionId": checkout_session.id})
 
 def stripe_payment_verify(request, billing_id):
     billing = base_models.Billing.objects.get(billing_id=billing_id)
     session_id = request.GET.get("session_id")
+
+    if not session_id:
+        return redirect(f"/payment_status/{billing.billing_id}/?payment_status=failed")
+    
     session = stripe.checkout.Session.retrieve(session_id)
 
     if session.payment_status == "paid":
         if billing.status == "Unpaid":
             billing.status = "Paid"
             billing.save()
+            billing.appointment.status = "completed"
+            billing.appointment.save()
+
 
             doctor_models.Notification.objects.create(
                 doctor = billing.appointment.doctor,
+                appointment = billing.appointment,
+                type = "New Appointment"
+            )
+
+            patient_models.Notification.objects.create(
+                doctor = billing.appointment.patient,
                 appointment = billing.appointment,
                 type = "Appointment Scheduled"
             )
 
             return redirect(f"/payment_status/{billing.billing_id}/?payment_status=paid")
+        
+        else:
+            return redirect(f"/payment_status/{billing.billing_id}/?payment_status=already_paid")
     else:
         return redirect(f"/payment_status/{billing.billing_id}/?payment_status=failed")
+
+
+def get_paypal_access_toke():
+    token_url = "https://api.sandbox.paypal.com/v1/oauth2/token"
+    data = { "grant_type": "client_credentials" }
+    auth =  (settings.PAYPAL_CLIENT_ID, settings.PAYPAY_SECRET_ID)
+    response = requests.post(token_url, data=data, auth=auth)
+
+    if response.status_code == 200:
+        print("Access token obtained successfully.")
+        response_data = response.json()
+        return response_data.get("access_token")
+    else:
+        raise Exception(f"Failed to obtain access token from PayPal. Status code: {response.status_code}")
+    
+
+
+def paypal_payment_verify(request, billing_id):
+    billing = base_models.Billing.objects.get(billing_id=billing_id)
+    access_token = get_paypal_access_toke()
+    transaction_id = request.GET.get("transaction_id")
+    paypal_api_url = f"https://api-m.sandbox.paypal.com/v2/checkout/orders/{transaction_id}"
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {get_paypal_access_toke()}"
+    }
+
+    response = requests.get(paypal_api_url, headers=headers)
+
+    if response.status_code == 200:
+        paypal_order_data = response.json()
+        paypal_payment_status = paypal_order_data['status']
+
+        if paypal_payment_status == "COMPLETED":
+            if billing.status == "Unpaid":
+                billing.status = "Paid"
+                billing.save()
+                billing.appointment.status = "completed"
+                billing.appointment.save()
+
+                doctor_models.Notification.objects.create(
+                    doctor = billing.appointment.doctor,
+                    appointment = billing.appointment,
+                    type = "New Appointment"
+                )
+
+                patient_models.Notification.objects.create(
+                    patient = billing.appointment.patient,
+                    appointment = billing.appointment,
+                    type = "Appointment Scheduled"
+                )
+
+                return redirect(f"/payment_status/{billing.billing_id}/?payment_status=paid")
+        else:
+            return redirect(f"/payment_status/{billing.billing_id}/?payment_status=already_paid")
+    else:
+        return redirect(f"/payment_status/{billing.billing_id}/?payment_status=failed")
+
+    
+
+@login_required
+def payment_status(request, billing_id):
+    billing = base_models.Billing.objects.get(billing_id=billing_id)
+    payment_status = request.GET.get("payment_status")
+
+    context = {
+        "billing":billing,
+        "payment_status":payment_status,
+    }
+
+    return render(request, "base/payment_status.html", context)

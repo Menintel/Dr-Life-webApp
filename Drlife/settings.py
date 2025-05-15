@@ -34,6 +34,8 @@ SECRET_KEY = 'django-insecure-1d&v#&ob1ts%(pnqoqt#q-&c_%#lj7h-nbzw-8l6c^ztwej@kz
 DEBUG = True
 
 ALLOWED_HOSTS = []
+# TO REMOVE PAYPAL POPUPS
+SECURE_CROSS_ORIGIN_OPENER_POLICY = 'same-origin-allow-popups'
 
 
 # Application definition
@@ -127,11 +129,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
-STATIC_FILES_DIRS = [os.path.join(BASE_DIR, "static")]
+#fixed STATICFILES_DIR instead of STATIC_FILES_DIRS
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
 MEDIA_URL = '/media/'
 

@@ -10,7 +10,7 @@ USER_TYPE = (
 class User(AbstractUser):
     email = models.EmailField(unique=True)
     username = models.CharField(null=True, blank=True)
-    user_type = models.CharField(max_length=50, choices=USER_TYPE, default=None)
+    user_type = models.CharField(max_length=50, choices=USER_TYPE, null=True, default=None)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ['username']

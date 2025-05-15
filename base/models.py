@@ -72,4 +72,5 @@ class Billing(models.Model):
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Billing for {self.patient.full_name} - Total: {self.total}"
+        patient_name = self.patient.full_name if self.patient else "Deleted Patient"
+        return f"Billing for {patient_name} - Total: {self.total}"
