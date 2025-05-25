@@ -172,3 +172,79 @@ def edit_prescription(request, appointment_id, prescription_id):
 
     messages.success(request, 'Prescription Updated Successfully .')
     return redirect("doctor:appointment_detail", appointment.appointment_id)
+
+
+@login_required
+def payments(request):
+    doctor = doctor_models.Doctor.objects.get(user=request.user)
+    payments = base_models.Billing.objects.filter(
+        appointment__doctor=doctor, 
+        status="Paid"
+    )
+
+    context = {
+        'payments': payments,
+    }
+
+    return render(request, 'doctor/payments.html', context)
+
+
+@login_required
+def notifications(request):
+    doctor = doctor_models.Doctor.objects.get(user=request.user)
+    notifications = doctor_models.Notification.objects.filter(doctor=doctor, seen=False)
+
+    context = {
+        'notifications': notifications,
+    }
+
+    return render(request, 'doctor/notifications.html', context)
+
+@login_required
+def seen_notification(request, id):
+    doctor = doctor_models.Doctor.objects.get(user=request.user)
+    notification = doctor_models.Notification.objects.get(doctor=doctor, id=id)
+    notification.seen = True
+    notification.save()
+
+    messages.success(request, 'Notification Seen Successfully .')
+    return redirect("doctor:notifications")
+
+@login_required
+def profile(request):
+    doctor = doctor_models.Doctor.objects.get(user=request.user)
+    formatted_next_available_appointment_date = doctor.next_available_appointment_date.strftime("%Y-%m-%d")
+    
+    if request.method == "POST":
+        full_name = request.POST.get("full_name")
+        image = request.FILES.get("image")
+        mobile = request.POST.get("mobile")
+        address = request.POST.get("address")
+        specialization = request.POST.get("specialization")
+        qualification = request.POST.get("qualification")
+        years_of_experience = request.POST.get("years_of_experience")
+        next_available_appointment_date = request.POST.get("next_available_appointment_date")
+
+        if image != None:
+            doctor.image = image
+
+        doctor.full_name = full_name
+        doctor.mobile = mobile
+        doctor.address = address
+        doctor.specialization = specialization
+        doctor.qualification = qualification
+        doctor.years_of_experience = years_of_experience
+        doctor.next_available_appointment_date = next_available_appointment_date
+        doctor.save()
+
+        messages.success(request, 'Profile Updated Successfully .')
+        return redirect("doctor:profile")
+
+    context = {
+        "doctor": doctor,
+        "formatted_next_available_appointment_date": formatted_next_available_appointment_date,
+    }
+
+    return render(request, "doctor/profile.html", context)
+        
+    

@@ -40,11 +40,11 @@
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Doctor Dashboard </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item" href="/doctor/dashboard.html">Dashboard</a></li>
-                                    <li><a class="dropdown-item" href="/doctor/appointments.html">Appointments</a></li>
-                                    <li><a class="dropdown-item" href="/doctor/payments.html">Payments</a></li>
-                                    <li><a class="dropdown-item" href="/doctor/notifications.html">Notifications</a></li>
-                                    <li><a class="dropdown-item" href="/doctor/profile.html">Profile</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'doctor:dashboard' %}">Dashboard</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'doctor:appointments' %}">Appointments</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'doctor:payments' %}">Payments</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'doctor:notifications' %}">Notifications</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'doctor:dashboard' %}">Profile</a></li>
                                 </ul>
                             </li>
 
@@ -99,7 +99,7 @@
                     <a href="/" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
                         <svg class="bi" width="30" height="24"><use xlink:href="#bootstrap" /></svg>
                     </a>
-                    <span class="mb-3 mb-md-0 text-muted">&copy; 2025 Company, Inc</span>
+                    <span class="mb-3 mb-md-0 text-muted">&copy; 2025 Dr.Life, Inc</span>
                 </div>
 
                 <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">

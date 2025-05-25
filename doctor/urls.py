@@ -21,4 +21,11 @@ urlpatterns = [
     path("add_prescription/<appointment_id>/", views.add_prescription, name="add_prescription"),
     path("edit_prescription/<appointment_id>/<prescription_id>/", views.edit_prescription, name="edit_prescription"),
 
+    path("payments/", views.payments, name="payments"),
+
+    path("notifications/", views.notifications, name="notifications"),
+    path("seen_notification/<id>/", views.seen_notification, name="seen_notification"),
+
+    path("profile/", views.profile, name="profile"),
+
 ]
