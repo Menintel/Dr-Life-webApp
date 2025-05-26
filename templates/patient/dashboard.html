@@ -6,61 +6,8 @@
         <section class="pt-5 pb-5">
             <div class="container">
                 <div class="row mt-0 mt-md-4">
-                    <div class="col-lg-3 col-md-4 col-12">
-                        <nav class="navbar navbar-expand-md shadow-sm mb-4 mb-lg-0 sidenav border rounded">
-                            <a class="d-xl-none d-lg-none d-md-none text-inherit fw-bold text-decoration-none text-dark p-3" href="#"> Menu </a>
-                            <button class="navbar-toggler d-md-none icon-shape icon-sm rounded bg-primary text-light m-3" type="button" data-bs-toggle="collapse" data-bs-target="#sidenav" aria-controls="sidenav" aria-expanded="false" aria-label="Toggle navigation">
-                                <span class="bi bi-grid"></span>
-                            </button>
-
-                            <div class="collapse navbar-collapse p-3" id="sidenav">
-                                <div class="navbar-nav flex-column">
-                                    <div class="d-flex align-items-center mb-3">
-                                        <img src="https://upload.wikimedia.org/wikipedia/commons/4/48/Outdoors-man-portrait_%28cropped%29.jpg" alt="avatar" class="rounded-circle avatar-xl" style="width: 70px; height: 70px; object-fit: cover" />
-                                        <div class="ms-3">
-                                            <h5 class="mb-0 fw-bold">Destiny Franks</h5>
-                                            <p class="mb-1 fs-6">Patient ID: 832974</p>
-                                        </div>
-                                    </div>
-                                    <ul class="list-unstyled ms-n2 mb-4">
-                                        <li class="nav-item">
-                                            <a class="dropdown-item nav-link" href="/patient/dashboard.html"><i class="bi bi-grid-fill"></i> Dashboard</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="dropdown-item nav-link" href="/patient/appointments.html"><i class="fas fa-calendar"></i> Appointment</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="dropdown-item nav-link" href="/patient/medical-reports.html"><i class="fas fa-notes-medical"></i> Medical Reports</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="dropdown-item nav-link" href="/patient/lab-tests.html"><i class="fas fa-flask"></i> Lab Test</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="dropdown-item nav-link" href="/patient/prescription.html"><i class="fas fa-pills"></i> Prescription</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="dropdown-item nav-link" href="/patient/lab-tests.html"><i class="fas fa-flask"></i> Lab Test</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="dropdown-item nav-link" href="/patient/prescription.html"><i class="fas fa-pills"></i> Prescription</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="dropdown-item nav-link" href="/patient/billing.html"><i class="fas fa-credit-card"></i> Billing</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="dropdown-item nav-link" href="/patient/notifications.html"><i class="fas fa-bell"></i> Notification</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="/patient/profile.html"> <i class="fas fa-edit"></i> Edit Profile </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="../auth/login.html"> <i class="fas fa-sign-out-alt"></i> Sign Out </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </nav>
-                    </div>
+                
+                    {% include 'patient/sidebar.html' %}
 
                     <div class="col-lg-9 col-md-8 col-12">
                         <div class="row mb-4">
@@ -72,7 +19,7 @@
                                     </span>
                                     <div class="ms-4">
                                         <div class="d-flex">
-                                            <h5 class="mb-0 fw-bold">3</h5>
+                                            <h5 class="mb-0 fw-bold">{{appointments.count}}</h5>
                                         </div>
                                         <p class="mb-0 h6 fw-semibold">Appointments</p>
                                     </div>
@@ -86,7 +33,7 @@
                                     </span>
                                     <div class="ms-4">
                                         <div class="d-flex">
-                                            <h5 class="mb-0 fw-bold">0</h5>
+                                            <h5 class="mb-0 fw-bold">{{notifications.count}}</h5>
                                         </div>
                                         <p class="mb-0 h6 fw-semibold">Notifications</p>
                                     </div>
@@ -100,7 +47,7 @@
                                     </span>
                                     <div class="ms-4">
                                         <div class="d-flex">
-                                            <h5 class="mb-0 fw-bold">$35</h5>
+                                            <h5 class="mb-0 fw-bold">{{ total_spent }}MAD</h5>
                                         </div>
                                         <p class="mb-0 h6 fw-semibold">Amount Spent</p>
                                     </div>
@@ -123,39 +70,19 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>546798</td>
-                                            <td>04</td>
-                                            <td>Sam Jay Ting</td>
-                                            <td>Chest Pain</td>
-                                            <td>7th August, 2024</td>
-                                            <td>Active</td>
+                                       {% for a in appointments %}
+                                       <tr>
+                                            <td>{{ a.appointment_id }}</td>
+                                            <td>{{ a.que_number }}</td>
+                                            <td>{{ a.doctor.full_name }}</td>
+                                            <td>{{ a.issues }}</td>
+                                            <td>{{ a.appointment_date|date:"d/m/Y" }}</td>
+                                            <td>{{ a.status }}</td>
                                             <td>
-                                                <a href="" class="btn btn-danger btn-sm">Cancel Appointment <i class="fas fa-trash ms-2"></i></a>
+                                                <a href="" class="btn btn-danger btn-sm rounded-pill" >Cancel Appointment <i class="fas fa-trash ms-2"></i></a>
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td>546798</td>
-                                            <td>04</td>
-                                            <td>Sam Jay Ting</td>
-                                            <td>Chest Pain</td>
-                                            <td>7th August, 2024</td>
-                                            <td>Active</td>
-                                            <td>
-                                                <a href="" class="btn btn-danger btn-sm">Cancel Appointment <i class="fas fa-trash ms-2"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>546798</td>
-                                            <td>04</td>
-                                            <td>Sam Jay Ting</td>
-                                            <td>Chest Pain</td>
-                                            <td>7th August, 2024</td>
-                                            <td>Active</td>
-                                            <td>
-                                                <a href="" class="btn btn-danger btn-sm">Cancel Appointment <i class="fas fa-trash ms-2"></i></a>
-                                            </td>
-                                        </tr>
+                                       {% endfor %}
                                     </tbody>
                                 </table>
                             </div>

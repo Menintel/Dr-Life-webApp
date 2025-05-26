@@ -1,0 +1,52 @@
+{% extends 'partials/base.html' %}
+{% block content %}
+
+    <section class="pt-5 pb-5">
+        <div class="container">
+            <div class="row mt-0 mt-md-4">
+                <div class="col-lg-3 col-md-4 col-12">
+                    {% include 'patient/sidebar.html' %}
+                </div>
+                <div class="col-lg-9 col-md-8 col-12">
+                    <h4 class="mb-0 mb-4 fw-bold">Medical Reports</h4>
+                    <div class="card mb-4 mt-2">
+                        <div class="shadow border p-3 mb-4 rounded-4">
+                            <p>
+                                <a class="" data-bs-toggle="collapse" href="#collapseExample1" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                    <p><span class="fw-semibold text-dark">Record ID:</span> 746534</p>
+                                    <p><span class="fw-semibold text-dark">Doctor:</span> Sam Jay Ting</p>
+                                    <p><span class="fw-semibold text-dark">Record Date:</span> 27th August, 2024</p>
+                                </a>
+                                <a class="btn btn-primary btn-sm" data-bs-toggle="collapse" href="#collapseExample1" role="button" aria-expanded="false" aria-controls="collapseExample"> Show more <i class="fas fa-arrow-down ms-2"></i> </a>
+                            </p>
+                            <div class="collapse" id="collapseExample1">
+                                <div>
+                                    <p><span class="fw-semibold text-dark">Diagonises:</span> Sleep more, eat healthy and exercise</p>
+                                    <p><span class="fw-semibold text-dark">Prescription:</span> 2 Dose Acemotophyl</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="shadow border p-3 mb-4 rounded-4">
+                            <p>
+                                <a class="" data-bs-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                    <p><span class="fw-semibold text-dark">Record ID:</span> 746534</p>
+                                    <p><span class="fw-semibold text-dark">Doctor:</span> Sam Jay Ting</p>
+                                    <p><span class="fw-semibold text-dark">Record Date:</span> 27th August, 2024</p>
+                                </a>
+                                <a class="btn btn-primary btn-sm" data-bs-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false" aria-controls="collapseExample"> Show more <i class="fas fa-arrow-down ms-2"></i> </a>
+                            </p>
+                            <div class="collapse" id="collapseExample2">
+                                <div>
+                                    <p><span class="fw-semibold text-dark">Diagonises:</span> Sleep more, eat healthy and exercise</p>
+                                    <p><span class="fw-semibold text-dark">Prescription:</span> 2 Dose Acemotophyl</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock content %}

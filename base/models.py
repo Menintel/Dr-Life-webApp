@@ -26,7 +26,7 @@ class Appointment(models.Model):
     service = models.ForeignKey(Service, on_delete=models.SET_NULL, null=True, blank=True, related_name='service_app')
     doctor = models.ForeignKey(doctor_models.Doctor, on_delete=models.SET_NULL, null=True, blank=True, related_name='service_app')
     patient = models.ForeignKey(patient_models.Patient, on_delete=models.SET_NULL, null=True, blank=True, related_name='service_app')
-    appointment_date = models.TextField(null=True, blank=True)
+    appointment_date = models.DateTimeField(null=True, blank=True)
     issues = models.TextField(blank=True, null=True)
     symptoms = models.TextField(blank=True, null=True)
     appointment_id = ShortUUIDField(length=6, max_length=10, alphabet="1234567890")
