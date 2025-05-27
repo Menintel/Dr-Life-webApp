@@ -5,6 +5,7 @@ from django.contrib import messages
 
 from patient import models as patient_models
 from base import models as base_models
+import patient
 
 
 # Create your views here.
@@ -83,3 +84,64 @@ def medical_report(request, appointment_id):
         "medical_records": medical_records,
     }
     return render(request, "patient/medical_report.html", context)
+
+@login_required
+def payments(request):
+    patient = patient_models.Patient.objects.get(user=request.user)
+    payments = base_models.Billing.objects.filter(patient=patient, status="Paid")
+
+    context = { 
+        "payments": payments,
+    }
+    return render(request, "patient/payments.html", context)
+
+@login_required
+def notifications(request):
+    patient = patient_models.Patient.objects.get(user=request.user)
+    notifications = patient_models.Notification.objects.filter(patient=patient)
+
+    context = {
+        "notifications": notifications,
+    }
+    return render(request, "patient/notifications.html", context)
+
+@login_required
+def seen_notification(request, id):
+    patient = patient_models.models.Patient.objects.get(user=request.user)
+    notification = patient_models.models.Notification.objects.get(patient=patient, id=id)
+    notification.seen = True
+    notification.save()
+
+    messages.success(request, "Notification Seen.")
+    return redirect("patient:notifications")
+
+
+@login_required
+def profile(request):
+    patient = patient_models.Patient.objects.get(user=request.user)
+    formatted_dob = patient.dob.strftime("%Y-%m-%d")
+    
+    if request.method == "POST":
+        full_name = request.POST.get("full_name")
+        image = request.FILES.get("image")
+        mobile = request.POST.get("mobile")
+        address = request.POST.get("address")
+        dob = request.POST.get("dob")
+
+        if image:
+            patient.image = image
+
+        patient.full_name = full_name
+        patient.mobile = mobile
+        patient.address = address
+        patient.dob = dob
+        patient.save()
+
+        messages.success(request, "Profile Updated Successfully.")
+        return redirect("patient:profile")
+    
+    context = {
+        "patient": patient,
+        "formatted_dob": formatted_dob,
+    }
+    return render(request, "patient/profile.html", context)

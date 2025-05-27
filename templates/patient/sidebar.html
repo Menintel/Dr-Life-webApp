@@ -28,19 +28,16 @@
                         <a class="dropdown-item nav-link" href="/patient/prescription.html"><i class="fas fa-pills"></i> Prescription</a>
                     </li>
                     <li class="nav-item">
-                        <a class="dropdown-item nav-link" href="/patient/lab-tests.html"><i class="fas fa-flask"></i> Lab Test</a>
+                        <a class="dropdown-item nav-link" href="{% url 'patient:payments' %}"><i class="fas fa-credit-card"></i> Billing</a>
                     </li>
                     <li class="nav-item">
-                        <a class="dropdown-item nav-link" href="/patient/billing.html"><i class="fas fa-credit-card"></i> Billing</a>
+                        <a class="dropdown-item nav-link" href="{% url 'patient:notifications' %}"><i class="fas fa-bell"></i> Notifications</a>
                     </li>
                     <li class="nav-item">
-                        <a class="dropdown-item nav-link" href="/patient/notifications.html"><i class="fas fa-bell"></i> Notification</a>
+                        <a class="nav-link" href="{% url 'patient:profile' %}"> <i class="fas fa-edit"></i> Edit Profile </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/patient/profile.html"> <i class="fas fa-edit"></i> Edit Profile </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../auth/login.html"> <i class="fas fa-sign-out-alt"></i> Sign Out </a>
+                        <a class="nav-link" href="{% url 'userauths:sign-out' %}"> <i class="fas fa-sign-out-alt"></i> Sign Out </a>
                     </li>
                 </ul>
             </div>

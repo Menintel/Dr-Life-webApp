@@ -12,4 +12,10 @@ urlpatterns = [
     path("activate_appointment/<int:appointment_id>", views.activate_appointment, name="activate_appointment"),
 
     path("medical_report/<int:appointment_id>", views.medical_report, name="medical_report"),
+
+    path("payments/", views.payments, name="payments"),
+    path("notifications/", views.notifications, name="notifications"),
+    path("seen_notification/<int:id>", views.seen_notification, name="seen_notification"),
+
+    path("profile/", views.profile, name="profile"),
 ]

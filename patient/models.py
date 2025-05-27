@@ -1,6 +1,6 @@
 from django.db import models
+from django.conf import settings
 from django.utils import timezone
-
 from userauths import models as userauths_models
 
 NOTIFICATION_TYPE = (
@@ -9,10 +9,9 @@ NOTIFICATION_TYPE = (
 )
 
 GENDER_CHOICES = (
-    ("Male", "Male"),
-    ("Female", "Female"),
+    ('Male', 'Male'),
+    ('Female', 'Female'),
 )
-
 
 # Create your models here.
 class Patient(models.Model):
@@ -23,7 +22,7 @@ class Patient(models.Model):
     email = models.EmailField(max_length=100)
     address = models.CharField(max_length=100, null=True, blank=True)
     gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
-    dob = models.CharField(max_length=100, null=True, blank=True)
+    dob = models.DateField()
 
     def __str__(self):
         return f"{self.full_name}"
