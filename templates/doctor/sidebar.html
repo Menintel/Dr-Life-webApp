@@ -1,3 +1,4 @@
+{% load static %}
 <div class="col-lg-3 col-md-4 col-12">
                 <nav class="navbar navbar-expand-md shadow mb-4 mb-lg-0 sidenav border rounded-4">
                     <a class="d-xl-none d-lg-none d-md-none text-inherit fw-bold text-decoration-none text-dark p-3" href="#"> Menu </a>
@@ -8,9 +9,9 @@
                     <div class="collapse navbar-collapse p-3" id="sidenav">
                         <div class="navbar-nav flex-column">
                             <div class="d-flex align-items-center mb-3">
-                                <img src="{{request.user.doctor.image.url}}" alt="avatar" class="rounded-circle avatar-xl" style="width: 70px; height: 70px; object-fit: cover" />
+                                <img src="{% if request.user.doctor.image %}{{request.user.doctor.image.url}}{% else %}{% static 'media/photos/default.jpg' %}{% endif %}" alt="avatar" class="rounded-circle avatar-xl" style="width: 70px; height: 70px; object-fit: cover" />
                                 <div class="ms-3">
-                                    <h5 class="mb-0 fw-bold">Dr. {{request.user.doctor.full_name}}</h5>
+                                    <h5 class="mb-0 fw-bold">Dr. {{request.user.doctor.user.first_name}} {{request.user.doctor.user.last_name}}</h5>
                                     <p class="mb-1 fs-6">Doctor ID: # {{request.user.doctor.id}}</p>
                                 </div>
                             </div>

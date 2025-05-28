@@ -16,4 +16,9 @@ urlpatterns = [
 
     path("paypal_payment_verify/<billing_id>/", views.paypal_payment_verify, name="paypal_payment_verify"),
 
+    path("about/", views.about, name="about"),
+    path("contact/", views.contact, name="contact"),
+    path("privacy-policy/", views.privacy_policy, name="privacy_policy"),
+    path("terms-conditions/", views.terms_conditions, name="terms_conditions"),
+
 ]

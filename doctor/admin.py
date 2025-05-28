@@ -3,7 +3,7 @@ from  doctor import models
 # Register your models here.
 
 class DoctorAdmin(admin.ModelAdmin):
-    list_display = ['user','full_name', 'specialization', 'qualification', 'years_experience']
+    list_display = ['user', 'specialization', 'qualification', 'years_experience']
 
 class NotificationAdmin(admin.ModelAdmin):
     list_display = ['doctor', 'appointment', 'type' , 'seen', 'date']

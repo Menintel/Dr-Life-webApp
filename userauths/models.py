@@ -15,6 +15,11 @@ class User(AbstractUser):
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ['username']
 
+    @property
+    def full_name(self):
+        """Return the full name (last name + first name)"""
+        return f"{self.last_name} {self.first_name}" if self.last_name and self.first_name else self.username
+
     def __str__(self):
         return self.username
     

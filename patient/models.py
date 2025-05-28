@@ -17,7 +17,6 @@ GENDER_CHOICES = (
 class Patient(models.Model):
     user = models.OneToOneField(userauths_models.User, on_delete=models.CASCADE)
     image = models.ImageField(upload_to="images", null=True, blank=True)
-    full_name = models.CharField(max_length=100)
     mobile = models.CharField(max_length=15, null=True, blank=True,)
     email = models.EmailField(max_length=100)
     address = models.CharField(max_length=100, null=True, blank=True)
@@ -25,7 +24,7 @@ class Patient(models.Model):
     dob = models.DateField()
 
     def __str__(self):
-        return f"{self.full_name}"
+        return f"{self.user.first_name} {self.user.last_name}"
     
     def age(self):
         today = timezone.now().date()
@@ -43,4 +42,4 @@ class Notification(models.Model):
         verbose_name_plural = "Notification"
 
     def __str__(self):
-        return f"{self.patient.full_name} Notification"
+        return f"{self.patient.user.first_name} {self.patient.user.last_name} Notification"

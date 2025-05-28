@@ -216,7 +216,8 @@ def profile(request):
     formatted_next_available_appointment_date = doctor.next_available_appointment_date.strftime("%Y-%m-%d")
     
     if request.method == "POST":
-        full_name = request.POST.get("full_name")
+        first_name = request.POST.get("first_name")
+        last_name = request.POST.get("last_name")
         image = request.FILES.get("image")
         mobile = request.POST.get("mobile")
         address = request.POST.get("address")
@@ -228,7 +229,10 @@ def profile(request):
         if image != None:
             doctor.image = image
 
-        doctor.full_name = full_name
+        doctor.user.first_name = first_name
+        doctor.user.last_name = last_name
+        doctor.user.save()
+        
         doctor.mobile = mobile
         doctor.address = address
         doctor.specialization = specialization

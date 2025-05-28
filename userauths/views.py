@@ -16,11 +16,17 @@ def register_view(request):
 
         form = userauths_forms.UserRegistrationForm(request.POST or None)
         if form.is_valid():
+
             user = form.save()
-            full_name = form.cleaned_data.get("full_name")
+            first_name = form.cleaned_data.get("first_name")
+            last_name = form.cleaned_data.get("last_name")
             email = form.cleaned_data.get("email")
             password = form.cleaned_data.get("password1")
             user_type = form.cleaned_data.get("user_type")
+
+            user.first_name = first_name
+            user.last_name = last_name
+            user.save()
 
             user = authenticate(request, email=email, password=password)
             login(request, user)
@@ -29,10 +35,17 @@ def register_view(request):
                 login(request, user)
 
                 print("user ============= ", user)
+                dob = form.cleaned_data.get("dob")
                 if user_type == "Doctor":
-                    doctor_models.Doctor.objects.create(user=user, full_name=full_name)
+                    doctor_models.Doctor.objects.create(
+                        user=user,
+                        dob=dob
+                    )
                 else:
-                    patient_models.Patient.objects.create(user=user, full_name=full_name, email=email)
+                    patient_models.Patient.objects.create(
+                        user=user,
+                        dob=dob
+                    )
 
                 messages.success(request, "Account Created successfully")
                 return redirect("/")

@@ -4,6 +4,8 @@ from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse
 from django.http import JsonResponse
+from django.core.mail import send_mail, EmailMultiAlternatives
+from django.template.loader import render_to_string
 
 import requests
 import stripe
@@ -37,7 +39,8 @@ def book_appointment(request, service_id, doctor_id):
     patient =  patient_models.Patient.objects.get(user=request.user)
 
     if request.method == "POST":
-        full_name = request.POST.get("full_name")
+        first_name = request.POST.get("first_name")
+        last_name = request.POST.get("last_name")
         email = request.POST.get("email")
         mobile = request.POST.get("mobile")
         gender = request.POST.get("gender")
@@ -47,7 +50,8 @@ def book_appointment(request, service_id, doctor_id):
         symptoms = request.POST.get("symptoms")
 
         #Update Patient bio data
-        patient.full_name = full_name
+        patient.user.first_name = first_name
+        patient.user.last_name = last_name
         patient.email = email
         patient.dob = dob
         patient.mobile = mobile
@@ -228,3 +232,36 @@ def payment_status(request, billing_id):
     }
 
     return render(request, "base/payment_status.html", context)
+
+def about(request):
+    return render(request, "base/about.html")
+
+def contact(request):
+    if request.method == "POST":
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        subject = request.POST.get('subject')
+        message = request.POST.get('message')
+        
+        # Send email to admin
+        try:
+            send_mail(
+                f"New Contact Form Submission - {subject}",
+                f"Name: {name}\nEmail: {email}\n\nMessage:\n{message}",
+                email,
+                ['admin@dr-life.com'],
+                fail_silently=False,
+            )
+            
+            messages.success(request, "Your message has been sent successfully!")
+            return redirect('base:contact')
+        except Exception as e:
+            messages.error(request, "There was an error sending your message. Please try again later.")
+            
+    return render(request, "base/contact.html")
+
+def privacy_policy(request):
+    return render(request, "base/privacy_policy.html")
+
+def terms_conditions(request):
+    return render(request, "base/terms_conditions.html")

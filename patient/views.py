@@ -122,7 +122,8 @@ def profile(request):
     formatted_dob = patient.dob.strftime("%Y-%m-%d")
     
     if request.method == "POST":
-        full_name = request.POST.get("full_name")
+        first_name = request.POST.get("first_name")
+        last_name = request.POST.get("last_name")
         image = request.FILES.get("image")
         mobile = request.POST.get("mobile")
         address = request.POST.get("address")
@@ -130,8 +131,11 @@ def profile(request):
 
         if image:
             patient.image = image
-
-        patient.full_name = full_name
+        
+        patient.user.first_name = first_name
+        patient.user.last_name = last_name
+        patient.user.save()
+        
         patient.mobile = mobile
         patient.address = address
         patient.dob = dob

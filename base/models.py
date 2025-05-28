@@ -33,7 +33,7 @@ class Appointment(models.Model):
     status = models.CharField(max_length=120, choices=STATUS)
 
     def __str__(self):
-        return f"{self.patient.full_name} with {self.doctor.full_name}"
+        return f"{self.patient.user.first_name} {self.patient.user.last_name} with {self.doctor.user.first_name} {self.doctor.user.last_name}"
     
 
 class MedicalRecord(models.Model):
@@ -42,7 +42,7 @@ class MedicalRecord(models.Model):
     treatment = models.TextField()
 
     def __str__(self):
-        return f"Medical Record for {self.appointment.patient.full_name}"
+        return f"Medical Record for {self.appointment.patient.user.first_name} {self.appointment.patient.user.last_name}"
     
 class LabTest(models.Model):
     appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE)
@@ -58,7 +58,7 @@ class Prescription(models.Model):
     medications = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return f"Prescription for {self.appointment.patient.full_name}"
+        return f"Prescription for {self.appointment.patient.user.first_name} {self.appointment.patient.user.last_name}"
     
 class Billing(models.Model):
     patient = models.ForeignKey(patient_models.Patient, on_delete=models.SET_NULL, null=True, blank=True, related_name="billing")
@@ -72,5 +72,5 @@ class Billing(models.Model):
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        patient_name = self.patient.full_name if self.patient else "Deleted Patient"
+        patient_name = self.patient.user.last_name if self.patient else "Deleted Patient"
         return f"Billing for {patient_name} - Total: {self.total}"

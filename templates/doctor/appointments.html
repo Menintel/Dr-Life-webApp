@@ -16,7 +16,7 @@
                             <a href="{% url 'doctor:appointment_detail' a.appointment_id %}" class="text-decoration-none text-dark">
                                 <p><span class="fw-semibold text-dark">Appointment ID:</span> {{a.appointment_id}} </p>
                                 <p><span class="fw-semibold text-dark">Service:</span> {{a.service.name}} </p>
-                                <p><span class="fw-semibold text-dark">Patient:</span> {{a.patient.full_name}}</p>
+                                <p><span class="fw-semibold text-dark">Patient:</span> {{a.patient.user.first_name}} {{a.patient.user.last_name}}</p>
                                 <p><span class="fw-semibold text-dark">Issue:</span> {{a.issues}} </p>
                                 <p><span class="fw-semibold text-dark">Symptoms:</span> {{a.symptoms}} </p>
                                 <p><span class="fw-semibold text-dark">Status:</span> {{a.status}} </p>

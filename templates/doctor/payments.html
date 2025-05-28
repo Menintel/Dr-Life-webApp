@@ -27,7 +27,7 @@
                                 <tr>
                                     <td>{{ p.billing_id }}</td>
                                     <td>{{ p.appointment.appointment_id }}</td>
-                                    <td>{{ p.appointment.patient.full_name }}</td>
+                                    <td>{{ p.appointment.patient.user.first_name }} {{ p.appointment.patient.user.last_name }}</td>
                                     <td>{{ p.appointment.service.name }}</td>
                                     <td>{{ p.total }} MAD</td>
                                     <td>{{ p.tax }} MAD</td>

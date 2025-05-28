@@ -52,6 +52,8 @@ INSTALLED_APPS = [
     'doctor',
     'patient',
     'userauths',
+
+    'anymail',
 ]
 
 MIDDLEWARE = [
@@ -149,6 +151,21 @@ LOGOUT_REDIRECT_URL = '/'
 AUTH_USER_MODEL = "userauths.User"
 
 MESSAGE_TAGS = { messages.ERROR: "danger"}
+
+# SETUP EMAIL :
+
+ANYMAIL = {
+    "MAILGUN_API_KEY": env("MAILGUN_API_KEY"),
+    "MAILGUN_SENDER_DOMAIN": env("MAILGUN_SENDER_DOMAIN"),
+    
+    "SPARKPOST_API_KEY": env("SPARKPOST_API_KEY"),
+    "BREVO_API_KEY": env("BREVO_API_KEY"),
+}
+
+FROM_EMAIL = env("FROM_EMAIL")
+EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
+DEFAULT_FROM_EMAIL = FROM_EMAIL
+SERVER_EMAIL = FROM_EMAIL
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"

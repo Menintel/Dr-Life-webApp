@@ -74,7 +74,7 @@
                                        <tr>
                                             <td>{{ a.appointment_id }}</td>
                                             <td>{{ a.que_number }}</td>
-                                            <td>{{ a.doctor.full_name }}</td>
+                                            <td>{{ a.doctor.user.first_name }} {{a.doctor.user.last_name}} </td>
                                             <td>{{ a.issues }}</td>
                                             <td>{{ a.appointment_date|date:"d/m/Y" }}</td>
                                             <td>{{ a.status }}</td>

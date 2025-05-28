@@ -16,7 +16,7 @@
                             <a class="" data-bs-toggle="collapse" href="#collapseExample{{a.id}}" role="button" aria-expanded="false" aria-controls="collapseExample">
                                 <p><span class="fw-semibold text-dark">Appointment ID:</span> {{a.appointment_id}}</p>
                                 <p><span class="fw-semibold text-dark">Que Number:</span> {{a.que_number}}</p>
-                                <p><span class="fw-semibold text-dark">Doctor:</span> {{a.doctor.full_name}}</p>
+                                <p><span class="fw-semibold text-dark">Doctor:</span> {{a.doctor.user.first_name}} {{a.doctor.user.last_name}} </p>
                                 <p><span class="fw-semibold text-dark">Issue:</span> {{a.issues}}</p>
                                 <p><span class="fw-semibold text-dark">Date:</span> {{a.appointment_date|date:"d/m/Y"}}</p>
                             </a>
