@@ -18,4 +18,7 @@ urlpatterns = [
     path("seen_notification/<int:id>", views.seen_notification, name="seen_notification"),
 
     path("profile/", views.profile, name="profile"),
+
+    path("prescription/<int:appointment_id>", views.prescription, name="prescription"),
+    path("medical_report/<int:appointment_id>", views.medical_report, name="medical_report"),
 ]

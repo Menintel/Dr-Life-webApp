@@ -11,12 +11,13 @@ import doctor
 @login_required
 def dashboard(request):
     doctor = doctor_models.Doctor.objects.get(user=request.user)
-    appointments = base_models.Appointment.objects.filter(doctor=doctor)
-    notifications = doctor_models.Notification.objects.filter(doctor=doctor)
+    appointments = base_models.Appointment.objects.filter(doctor=doctor).exclude(status='Completed').order_by('-appointment_date')
+    notifications = doctor_models.Notification.objects.filter(doctor=doctor, seen=False)
 
     context  = {
         'appointments': appointments,
-        'notifications': notifications, 
+        'notifications': notifications,
+        'unseen_notifications_count': notifications.count()
     }
 
     return render(request, 'doctor/dashboard.html', context)

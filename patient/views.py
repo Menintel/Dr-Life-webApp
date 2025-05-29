@@ -149,3 +149,26 @@ def profile(request):
         "formatted_dob": formatted_dob,
     }
     return render(request, "patient/profile.html", context)
+
+
+@login_required
+def prescription(request, appointment_id):
+    appointment = base_models.Appointment.objects.get(appointment_id=appointment_id)
+    prescriptions = base_models.Prescription.objects.filter(appointment=appointment)
+
+    context = {
+        "appointment": appointment,
+        "prescriptions": prescriptions,
+    }
+    return render(request, "patient/prescription.html", context)
+
+@login_required
+def medical_report(request, appointment_id):
+    appointment = base_models.Appointment.objects.get(appointment_id=appointment_id)
+    medical_records = base_models.MedicalRecord.objects.filter(appointment=appointment)
+
+    context = {
+        "appointment": appointment,
+        "medical_records": medical_records,
+    }
+    return render(request, "patient/medical_report.html", context)

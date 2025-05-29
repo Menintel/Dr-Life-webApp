@@ -1,0 +1,25 @@
+{% extends 'partials/base.html' %}
+{% block content %}
+<div class="row">
+    {% for s in services %}
+        <div class="col-lg-3 mt-5 ms-5">
+            <div class="card mb-4 shadow">
+                <a href="{% url 'base:service_detail' s.id %}">
+                <img src="{{s.image.url}}" alt="course" class="card-img-top" /></a>
+                <div class="card-body">
+                    <h4 class="mb-2 text-truncate-line-2"><a href="{% url 'base:service_detail' s.id %}" class="text-inherit text-dark text-decoration-none"> {{s.name}} </a></h4>
+                    <p> {{s.description|truncatechars:80}} </p>
+                    <div class="mt-2">
+                        <span class="fw-semibold">Doctors Available: {{s.available_doctors.all.count}}</span>
+                        <div class="lh-1 mt-3">
+                            <span class="text-dark fw-bold fs-4"> {{s.cost}} </span></div>
+                        <a href="{% url 'base:service_detail' s.id %}" class="btn btn-sm btn-primary mt-3 rounded-pill">Book Appointment <i class="fas fa-arrow-right ms-2"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+</div>
+
+{% endblock content %}

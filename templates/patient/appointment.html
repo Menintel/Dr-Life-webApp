@@ -13,16 +13,16 @@
                     {% for a in appointments %}
                     <div class="shadow border p-3 mb-4 rounded-4">
                         <p>
-                            <a class="" data-bs-toggle="collapse" href="#collapseExample{{a.id}}" role="button" aria-expanded="false" aria-controls="collapseExample">
+                            <a class="" data-bs-toggle="collapse" href="#collapseExample{{a.appointment_id}}" role="button" aria-expanded="false" aria-controls="collapseExample">
                                 <p><span class="fw-semibold text-dark">Appointment ID:</span> {{a.appointment_id}}</p>
                                 <p><span class="fw-semibold text-dark">Que Number:</span> {{a.que_number}}</p>
                                 <p><span class="fw-semibold text-dark">Doctor:</span> {{a.doctor.user.first_name}} {{a.doctor.user.last_name}} </p>
                                 <p><span class="fw-semibold text-dark">Issue:</span> {{a.issues}}</p>
                                 <p><span class="fw-semibold text-dark">Date:</span> {{a.appointment_date|date:"d/m/Y"}}</p>
                             </a>
-                            <a class="btn btn-primary btn-sm" data-bs-toggle="collapse" href="#collapseExample{{a.id}}" role="button" aria-expanded="false" aria-controls="collapseExample"> Show more <i class="fas fa-arrow-down ms-2"></i> </a>
+                            <a class="btn btn-primary btn-sm" data-bs-toggle="collapse" href="#collapseExample{{a.appointment_id}}" role="button" aria-expanded="false" aria-controls="collapseExample"> Show more <i class="fas fa-arrow-down ms-2"></i> </a>
                         </p>
-                        <div class="collapse" id="collapseExample{{a.id}}">
+                        <div class="collapse" id="collapseExample{{a.appointment_id}}">
                             <div>
                                 <p><span class="fw-semibold text-dark">Status:</span> {{a.status}}</p>
                                 <p>
@@ -30,13 +30,10 @@
                                 </p>
                                 <p class="border-top pt-4"></p>
                                 <p>
-                                     <a href="" class="btn btn-secondary btn-sm">View Medical Reports<i class="fas fa-arrow-right ms-2"></i></a>
+                                     <a href="{% url 'patient:medical_report' a.appointment_id %}" class="btn btn-secondary btn-sm">View Medical Reports<i class="fas fa-arrow-right ms-2"></i></a>
                                 </p>
                                 <p>
-                                     <a href="" class="btn btn-secondary btn-sm">View Lab Test<i class="fas fa-arrow-right ms-2"></i></a>
-                                </p>
-                                <p>
-                                     <a href="" class="btn btn-secondary btn-sm">View Prescription<i class="fas fa-arrow-right ms-2"></i></a>
+                                     <a href="{% url 'patient:prescription' a.appointment_id %}" class="btn btn-secondary btn-sm">View Prescription<i class="fas fa-arrow-right ms-2"></i></a>
                                 </p>
                             </div>
                         </div>

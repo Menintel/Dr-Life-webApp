@@ -87,9 +87,9 @@
                     <p class="text-darker fs-5">Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus et voluptate omnis accusantium. Tenetur explicabo vero quo dolore. Repudiandae itaque accusantium dolor ab. Blanditiis esse tempore ut ad accusantium nihil?</p>
 
                     <div class="d-flex align-items-center gap-2 mt-5">
-                        <button class="btn btn-outline-primary rounded-pill"><i class="fas fa-video ms-1"></i> View Services</button>
-                        <button class="btn btn-primary rounded-pill">Create Account <i class="fas fa-user-plus ms-1"></i></button>
-                        <button class="btn btn-primary rounded-pill">Learn More <i class="fas fa-arrow-right ms-1"></i></button>
+                        <a href="{% url 'base:services' %}" class="btn btn-outline-primary rounded-pill"><i class="fas fa-video ms-1"></i> View Services</a>
+                        <a href="{% url 'userauths:sign-up' %}" class="btn btn-primary rounded-pill">Create Account <i class="fas fa-user-plus ms-1"></i></a>
+                        <a href="{% url 'base:about' %}" class="btn btn-primary rounded-pill">Learn More <i class="fas fa-arrow-right ms-1"></i></a>
                     </div>
                 </div>
                 <div class="col-lg-6">

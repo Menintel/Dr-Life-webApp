@@ -26,9 +26,9 @@
     
     <form class="row" method="POST">
         {% csrf_token %}
-        <div class="col-lg-12 mb-3">
+        <div class="col-lg-6 mb-3">
             <label for="name" class="mb-2">Full Name</label>
-            <input type="text" value="{{patient.full_name}}" name="full_name" class="form-control" placeholder="John Doe" />
+            <input type="text" value="{{patient.user.first_name}} {{patient.user.last_name}}" name="full_name" class="form-control" placeholder="John Doe" />
         </div>
         <div class="col-lg-6 mb-3">
             <label for="name" class="mb-2">Email</label>
@@ -47,9 +47,9 @@
         </div>
         <div class="col-lg-6 mb-3">
             <label for="name"  class="mb-2">Date of Birth</label>
-            <input type="date" value="{{patient.dob}}" name="dob" class="form-control" />
+            <input type="date" value="{{patient.dob|date:'Y-m-d'}}" name="dob" class="form-control" />
         </div>
-        <div class="col-lg-12 mb-3">
+        <div class="col-lg-6 mb-3">
             <label for="name" class="mb-2">Address</label>
             <input type="text" value="{{patient.address}}" name="address" class="form-control" placeholder="123 Main Street" />
         </div>

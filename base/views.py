@@ -265,3 +265,10 @@ def privacy_policy(request):
 
 def terms_conditions(request):
     return render(request, "base/terms_conditions.html")
+
+def services(request):
+    services = base_models.Service.objects.all()
+    context = {
+        "services":services
+    }
+    return render(request, "base/services.html", context)

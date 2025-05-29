@@ -27,12 +27,14 @@
 
                     <div class="col-sm-6 col-lg-6 mb-3 mb-lg-0">
                         <div class="d-flex justify-content-center align-items-center p-4 bg-dark bg-opacity-10 rounded-3">
-                            <span class="display-6 lh-1 text-dark mb-0">
-                                <i class="fas fa-bell"></i>
-                            </span>
+                            <a href="{% url 'doctor:notifications' %}" class="text-dark text-decoration-none">
+                                <span class="display-6 lh-1 mb-0">
+                                    <i class="fas fa-bell"></i>
+                                </span>
+                            </a>
                             <div class="ms-4">
                                 <div class="d-flex">
-                                    <h5 class="mb-0 fw-bold"> {{notifications.count}} </h5>
+                                    <h5 class="mb-0 fw-bold"> {{unseen_notifications_count}} </h5>
                                 </div>
                                 <p class="mb-0 h6 fw-semibold">Notifications</p>
                             </div>
@@ -63,8 +65,8 @@
                                         <td> {{a.appointment_date}} </td>
                                         <td> {{a.status}} </td>
                                         <td>
-                                            <a href="" class="btn btn-secondary btn-sm"> <i class="fas fa-eye"></i></a>
-                                            <a href="" class="btn btn-danger btn-sm">Cancel Appointment <i class="fas fa-trash ms-2"></i></a>
+                                            <a href="{% url 'doctor:appointment_detail' a.appointment_id %}" class="btn btn-secondary btn-sm"> <i class="fas fa-eye"></i></a>
+                                            <a href="{% url 'doctor:cancel_appointment' a.appointment_id %}" class="btn btn-danger btn-sm">Cancel Appointment <i class="fas fa-trash ms-2"></i></a>
                                         </td>
                                     </tr>
                                 {% endfor %}
