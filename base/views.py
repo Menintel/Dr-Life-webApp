@@ -1,3 +1,4 @@
+from heapq import merge
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
@@ -212,6 +213,38 @@ def paypal_payment_verify(request, billing_id):
                     appointment = billing.appointment,
                     type = "Appointment Scheduled"
                 )
+
+                merge_data = {
+                    "billing":billing,
+                }
+
+                #DOCTOR EMAIL
+                subject = "New Appointment"
+                text_body = render_to_string("email/new_appointment.txt", merge_data)
+                html_body = render_to_string("email/new_appointment.html", merge_data)
+
+                msg = EmailMultiAlternatives(
+                    subject=subject,
+                    body=text_body,
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    to=[billing.appointment.doctor.user.email]
+                )
+                msg.attach_alternative(html_body, "text/html")
+                msg.send()
+
+                #PATIENT EMAIL APPOINTMENT SCHEDULED
+                subject = "Appointment Scheduled"
+                text_body = render_to_string("email/appointment_scheduled.txt", merge_data)
+                html_body = render_to_string("email/appointment_scheduled.html", merge_data)
+
+                msg = EmailMultiAlternatives(
+                    subject=subject,
+                    body=text_body,
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    to=[billing.appointment.patient.email]
+                )
+                msg.attach_alternative(html_body, "text/html")
+                msg.send()
 
                 return redirect(f"/payment_status/{billing.billing_id}/?payment_status=paid")
         else:

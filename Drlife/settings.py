@@ -152,20 +152,17 @@ AUTH_USER_MODEL = "userauths.User"
 
 MESSAGE_TAGS = { messages.ERROR: "danger"}
 
-# SETUP EMAIL :
+# Email Configuration
 
-ANYMAIL = {
-    "MAILGUN_API_KEY": env("MAILGUN_API_KEY"),
-    "MAILGUN_SENDER_DOMAIN": env("MAILGUN_SENDER_DOMAIN"),
-    
-    "SPARKPOST_API_KEY": env("SPARKPOST_API_KEY"),
-    "BREVO_API_KEY": env("BREVO_API_KEY"),
-}
-
-FROM_EMAIL = env("FROM_EMAIL")
-EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
-DEFAULT_FROM_EMAIL = FROM_EMAIL
-SERVER_EMAIL = FROM_EMAIL
+# Mailtrap SMTP settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'sandbox.smtp.mailtrap.io'
+EMAIL_HOST_USER = env('MAILTRAP_USERNAME', default='Menintel')
+EMAIL_HOST_PASSWORD = env('MAILTRAP_PASSWORD')
+EMAIL_PORT = '2525'
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = env('FROM_EMAIL', default='noreply@menintel.vercel.app')
+SERVER_EMAIL = DEFAULT_FROM_EMAIL
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"

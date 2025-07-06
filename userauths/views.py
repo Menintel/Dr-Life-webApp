@@ -90,3 +90,90 @@ def logout_view(request):
     logout(request)
     messages.success(request, "Logged Out Successfully")
     return redirect('/')
+
+def forgot_password_view(request):
+    if request.method == "POST":
+        form = userauths_forms.ForgotPasswordForm(request.POST or None)
+        if form.is_valid():
+            email = form.cleaned_data.get("email")
+            user = userauths_models.User.objects.filter(email=email).first()
+            if user is not None:
+                # Generate password reset token
+                from django.contrib.auth.tokens import default_token_generator
+                from django.utils.http import urlsafe_base64_encode
+                from django.utils.encoding import force_bytes
+                from django.core.mail import send_mail
+                from django.template.loader import render_to_string
+                from django.conf import settings
+
+                # Generate token and uid
+                token = default_token_generator.make_token(user)
+                uid = urlsafe_base64_encode(force_bytes(user.pk))
+                
+                # Build reset URL
+                reset_url = f"{request.scheme}://{request.get_host()}/reset-password/{uid}/{token}/"
+                
+                # Prepare email
+                email_subject = "Password Reset Request"
+                email_body = render_to_string('email/password_reset.html', {
+                    'user': user,
+                    'reset_url': reset_url,
+                })
+                
+                # Send email
+                send_mail(
+                    subject=email_subject,
+                    message=email_body,
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    recipient_list=[email],
+                    html_message=email_body,
+                )
+                
+                messages.success(request, "Password reset instructions have been sent to your email.")
+                return redirect('userauths:login')
+            else:
+                messages.error(request, "No account found with this email address.")
+    else:
+        form = userauths_forms.ForgotPasswordForm()
+    
+    context = {"form": form}
+    return render(request, "userauths/forgot-password.html", context)
+
+
+def reset_password_view(request, uidb64, token):
+    """
+    View to handle the password reset confirmation
+    """
+    from django.contrib.auth.tokens import default_token_generator
+    from django.utils.http import urlsafe_base64_decode
+    from django.utils.encoding import force_str
+    
+    try:
+        # Decode the UID and get user
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = userauths_models.User.objects.get(pk=uid)
+        
+        # Verify token is valid
+        if default_token_generator.check_token(user, token):
+            if request.method == "POST":
+                form = userauths_forms.ResetPasswordForm(request.POST)
+                if form.is_valid():
+                    password = form.cleaned_data.get("password1")
+                    
+                    # Set new password
+                    user.set_password(password)
+                    user.save()
+                    
+                    messages.success(request, "Your password has been reset successfully. You can now login with your new password.")
+                    return redirect('userauths:login')
+            else:
+                form = userauths_forms.ResetPasswordForm()
+                
+            context = {"form": form}
+            return render(request, "userauths/reset-password.html", context)
+        else:
+            messages.error(request, "The reset link is invalid or has expired.")
+            return redirect('userauths:forgot_password')
+    except (TypeError, ValueError, OverflowError, userauths_models.User.DoesNotExist):
+        messages.error(request, "The reset link is invalid or has expired.")
+        return redirect('userauths:forgot_password')

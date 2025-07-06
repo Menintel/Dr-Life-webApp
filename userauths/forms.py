@@ -59,3 +59,36 @@ class LoginForm(forms.Form):
     class Meta:
         model = User
         fields = ['email','password']
+
+
+class ForgotPasswordForm(forms.Form):
+    email = forms.EmailField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Enter Email e.g johndoe@gmail.com'}))
+
+    def clean_email(self):
+        return self.cleaned_data.get('email', '').lower()
+
+    class Meta:
+        model = User
+        fields = ['email']
+
+
+class ResetPasswordForm(forms.Form):
+    password1 = forms.CharField(
+        label="New Password",
+        widget=forms.PasswordInput(attrs={'class':'form-control','placeholder':'Enter new password'})
+    )
+    password2 = forms.CharField(
+        label="Confirm New Password",
+        widget=forms.PasswordInput(attrs={'class':'form-control','placeholder':'Confirm new password'})
+    )
+    
+    def clean(self):
+        cleaned_data = super().clean()
+        password1 = cleaned_data.get("password1")
+        password2 = cleaned_data.get("password2")
+        
+        if password1 and password2:
+            if password1 != password2:
+                raise forms.ValidationError("Passwords don't match. Please try again.")
+        
+        return cleaned_data
